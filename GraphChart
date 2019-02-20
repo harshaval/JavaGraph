@@ -1,0 +1,62 @@
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import java.util.Arrays;
+import javafx.scene.chart.*;
+/**
+ *
+ * @author 1708742
+ */
+public class GraphGUI extends Application {
+    Button addData; Label label1; Label label2;
+    TextField numberN; TextField functionN;
+    TextArea showData;
+    @Override public void start(Stage stage){ /*Initialize any GUI components here*/
+        stage.setTitle("Taking the XY coordinates and creating a simple XY scatter plot");
+        Double[] xData = new Double[100], yData=new Double[100];
+        for(int i = 0; i < xData.length; i++) {
+            xData[i]= 100.0*i;
+            yData[i] = 2*xData[i]+Math.random()*400.0;
+        }
+        
+        GridPane root = new GridPane();
+        
+        root.setHgap(20); root.setVgap(20);
+        
+        label1 = new Label("N"); root.add(label1, 1, 0);
+        label2 = new Label("f(N)"); root.add(label2, 2, 0);
+        
+        addData = new Button("Add Data");
+        addData.setMinWidth(150);
+        addData.setOnAction(new EventHandler<ActionEvent>()){
+            @Override public void handle(ActionEvent e){
+                int N = Integer.parseInt(numberN.getText());
+                int F = Integer.parseInt(functionN.getText());
+            }
+        }
+        root.add(addData, 0, 1);
+        
+        numberN = new TextField("Enter the N entry"); root.add(numberN, 1, 0);
+        functionN = new TextField("Enter the function f(N)"); root.add(functionN, 2, 0);
+        showData = new TextArea("Show each N and f(N) entry into the graph"); root.add(showData, 2, 2);
+        numberN.setMinWidth(150);
+        functionN.setMinWidth(150);
+        
+        root.getChildren().add(root);
+        
+        NumberAxis xaxis = new NumberAxis();
+        NumberAxis yaxis = new NumberAxis();
+        XYChart.Series data = new XYChart.Series();
+        for(int i = 0; i < xData.length; i++){
+            data.getData().add(new XYChart.Data(xData[i], yData[i]));
+        }
+        ScatterChart<Number, Number> chart = new ScatterChart(xaxis, yaxis);
+        chart.getData().add(data);
+    }
+}
